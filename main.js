@@ -12,9 +12,8 @@ footerTextArr.forEach(char => {
 
 const charSpanNodeArr = document.querySelectorAll('.footer-char');
 console.log(charSpanNodeArr);
-let timeout = 0;
 
-const loop = (forwardBoolean, addBoolean, speed) => {
+const loop = (forwardBoolean, addBoolean, speed, timeout) => {
   const arr = forwardBoolean ? charSpanNodeArr : [...charSpanNodeArr].reverse();
 
   const styleArr = [];
@@ -36,6 +35,7 @@ const loop = (forwardBoolean, addBoolean, speed) => {
     // top: ${-hShadow} ${vShadowTop}
     // bottom: ${hShadow} ${vShadowBottom}
 
+    // timeout: ${timeout}
     // `);
 
     const style = `text-shadow: ${-hShadow}px ${vShadowTop}px ${shadowPx *
@@ -54,18 +54,20 @@ const loop = (forwardBoolean, addBoolean, speed) => {
     vShadowTop -= pastHalfway * shadowIncrement;
     vShadowBottom += pastHalfway * shadowIncrement;
   });
+  return timeout;
 };
 
 const sparkle = charArr => {
+  let timeout = 0;
   const speedIncrement = 25;
 
-  loop(true, true, speedIncrement);
+  timeout = loop(true, true, speedIncrement, timeout);
   timeout -= (charArr.length - 2) * speedIncrement;
-  loop(true, false, speedIncrement);
+  timeout = loop(true, false, speedIncrement, timeout);
   timeout += 100;
-  loop(false, true, speedIncrement);
+  timeout = loop(false, true, speedIncrement, timeout);
   timeout -= (charArr.length - 2) * speedIncrement;
-  loop(false, false, speedIncrement);
+  loop(false, false, speedIncrement, timeout);
 
   setTimeout(() => {
     sparkle(charArr);
