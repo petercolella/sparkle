@@ -77,13 +77,19 @@ const loop = (charArr, forwardBoolean, addBoolean, speed, timeout) => {
 };
 
 const sparkle = charArr => {
+  const { speedIncrement, timeBetweenDirectionChg } = sparkleOptions;
+  let { charOffset, timeBetweenSparkles } = sparkleOptions;
+
+  if (charOffset > charArr.length) charOffset = charArr.length;
+
+  const minimumTimeBetweenSparkles =
+    (charArr.length + charOffset) * speedIncrement * 2 +
+    timeBetweenDirectionChg;
+
+  if (timeBetweenSparkles < minimumTimeBetweenSparkles)
+    timeBetweenSparkles = minimumTimeBetweenSparkles;
+
   let timeout = 0;
-  const {
-    charOffset,
-    speedIncrement,
-    timeBetweenDirectionChg,
-    timeBetweenSparkles
-  } = sparkleOptions;
 
   timeout = loop(charArr, true, true, speedIncrement, timeout);
   timeout -= (charArr.length - charOffset) * speedIncrement;
