@@ -11,18 +11,38 @@ footerTextArr.forEach(char => {
 });
 
 const charSpanNodeArr = document.querySelectorAll('.footer-char');
-console.log(charSpanNodeArr);
 
-const loop = (forwardBoolean, addBoolean, speed, timeout) => {
-  const arr = forwardBoolean ? charSpanNodeArr : [...charSpanNodeArr].reverse();
+const loopOptions = {
+  shadowPx: 2,
+  blurRadius: 4,
+  shadowColorBottom: '#fff',
+  shadowColorTop: '#fff',
+  vShadowBottom: 0,
+  vShadowTop: 0
+};
 
-  const styleArr = [];
-  const shadowPx = 1;
+const sparkleOptions = {
+  charOffset: 2,
+  speedIncrement: 25,
+  timeBetweenDirectionChg: 100,
+  timeBetweenSparkles: 4000
+};
+
+const loop = (charArr, forwardBoolean, addBoolean, speed, timeout) => {
+  const arr = forwardBoolean ? charArr : [...charArr].reverse();
+  const {
+    shadowPx,
+    blurRadius,
+    shadowColorBottom,
+    shadowColorTop
+  } = loopOptions;
+
+  let { vShadowBottom, vShadowTop } = loopOptions;
+
+  const hShadow = forwardBoolean ? -shadowPx : shadowPx;
   const shadowIncrement = (shadowPx / arr.length) * 2;
 
-  let hShadow = forwardBoolean ? -shadowPx : shadowPx;
-  let vShadowTop = 0;
-  let vShadowBottom = 0;
+  const styleArr = [];
 
   arr.forEach((char, i) => {
     const pastHalfway = i + 1 <= arr.length / 2 ? 1 : -1;
@@ -38,8 +58,7 @@ const loop = (forwardBoolean, addBoolean, speed, timeout) => {
     // timeout: ${timeout}
     // `);
 
-    const style = `text-shadow: ${-hShadow}px ${vShadowTop}px ${shadowPx *
-      4}px #fff, ${hShadow}px ${vShadowBottom}px ${shadowPx * 4}px #fff`;
+    const style = `text-shadow: ${-hShadow}px ${vShadowTop}px ${blurRadius}px ${shadowColorTop}, ${hShadow}px ${vShadowBottom}px ${blurRadius}px ${shadowColorBottom}`;
     styleArr.push(style);
 
     setTimeout(() => {
@@ -59,19 +78,24 @@ const loop = (forwardBoolean, addBoolean, speed, timeout) => {
 
 const sparkle = charArr => {
   let timeout = 0;
-  const speedIncrement = 25;
+  const {
+    charOffset,
+    speedIncrement,
+    timeBetweenDirectionChg,
+    timeBetweenSparkles
+  } = sparkleOptions;
 
-  timeout = loop(true, true, speedIncrement, timeout);
-  timeout -= (charArr.length - 2) * speedIncrement;
-  timeout = loop(true, false, speedIncrement, timeout);
-  timeout += 100;
-  timeout = loop(false, true, speedIncrement, timeout);
-  timeout -= (charArr.length - 2) * speedIncrement;
-  loop(false, false, speedIncrement, timeout);
+  timeout = loop(charArr, true, true, speedIncrement, timeout);
+  timeout -= (charArr.length - charOffset) * speedIncrement;
+  timeout = loop(charArr, true, false, speedIncrement, timeout);
+  timeout += timeBetweenDirectionChg;
+  timeout = loop(charArr, false, true, speedIncrement, timeout);
+  timeout -= (charArr.length - charOffset) * speedIncrement;
+  loop(charArr, false, false, speedIncrement, timeout);
 
   setTimeout(() => {
     sparkle(charArr);
-  }, 4000);
+  }, timeBetweenSparkles);
 };
 
 sparkle(charSpanNodeArr);
