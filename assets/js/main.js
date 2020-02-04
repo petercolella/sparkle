@@ -17,6 +17,7 @@ const loopOptions = {
   blurRadius: 4,
   shadowColorBottom: '#fff',
   shadowColorTop: '#fff',
+  textColor: '#f8f8f2',
   vShadowBottom: 0,
   vShadowTop: 0
 };
@@ -34,7 +35,8 @@ const loop = (charArr, forwardBoolean, addBoolean, speed, timeout) => {
     shadowPx,
     blurRadius,
     shadowColorBottom,
-    shadowColorTop
+    shadowColorTop,
+    textColor
   } = loopOptions;
 
   let { vShadowBottom, vShadowTop } = loopOptions;
@@ -58,16 +60,13 @@ const loop = (charArr, forwardBoolean, addBoolean, speed, timeout) => {
     // timeout: ${timeout}
     // `);
 
-    const style = `text-shadow: ${-hShadow}px ${vShadowTop}px ${blurRadius}px ${shadowColorTop}, ${hShadow}px ${vShadowBottom}px ${blurRadius}px ${shadowColorBottom}`;
+    const style = `text-shadow: ${-hShadow}px ${vShadowTop}px ${blurRadius}px ${shadowColorTop}, ${hShadow}px ${vShadowBottom}px ${blurRadius}px ${shadowColorBottom}; color: ${textColor}`;
     styleArr.push(style);
 
     setTimeout(() => {
       addBoolean
-        ? char.classList.add('sparkle')
-        : char.classList.remove('sparkle');
-      addBoolean
         ? char.setAttribute('style', `${styleArr[i]}`)
-        : char.setAttribute('style', null);
+        : char.removeAttribute('style');
     }, (timeout += speed));
 
     vShadowTop -= pastHalfway * shadowIncrement;
