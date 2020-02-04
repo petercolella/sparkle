@@ -1,29 +1,24 @@
-.footer {
-  align-items: center;
-  display: flex;
-  bottom: 0;
-  height: 0;
-  background-color: #414339;
-  position: absolute;
-  width: 100%;
-  transition: height 0.75s linear;
+html,
+body,
+div,
+span,
+p {
+  margin: 0;
+  padding: 0;
+  border: 0;
 }
 
-.show {
+.footer {
+  align-items: center;
+  background-color: #414339;
+  bottom: 0;
+  display: flex;
   height: 4em;
+  position: absolute;
+  width: 100%;
 }
 
 .footer-text {
   color: #ccccc7;
   margin: 0 auto;
-  opacity: 0;
-  transition: opacity 0.5s linear 1s;
-}
-
-.visible {
-  opacity: 1;
-}
-
-.sparkle {
-  color: #f8f8f2;
 }
